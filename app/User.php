@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Task;
 
 class User extends Authenticatable implements JWTSubject, Uploader
 {
@@ -64,5 +65,9 @@ class User extends Authenticatable implements JWTSubject, Uploader
     public function getUploadAttributes() : array
     {
         return $this->uploadAttributes;
+    }
+    public function tasks()
+    {
+        return $this->hasMany(Task::class); // Kullanıcının görevleri
     }
 }
