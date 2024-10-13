@@ -169,9 +169,11 @@ function App(props) {
                     <Loading />
                 ) : (
                     <Router>
+                    <>
                         <Navigator />
-                        <TaskDashboard /> {/* Görev yönetim bileşeni */}
-                    </Router>
+                        <TaskDashboard />
+                    </>
+                </Router>
                 )}
             </AppProvider>
         </MuiThemeProvider>

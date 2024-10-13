@@ -1,4 +1,3 @@
-// src/components/TaskForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -9,7 +8,7 @@ const TaskForm = ({ refreshTasks }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await axios.post('/api/tasks', { title, description });
-        refreshTasks(); // Görevler yenilenecek
+        refreshTasks();
         setTitle('');
         setDescription('');
     };

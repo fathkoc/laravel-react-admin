@@ -1,16 +1,30 @@
-// src/components/KanbanBoard.js
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import axios from 'axios';
 
-const KanbanBoard = ({ tasks, onDelete }) => {
+const KanbanBoard = ({ tasks, onDelete, refreshTasks }) => {
     const columns = {
         'Yapılacak': tasks.filter(task => task.status === 'pending'),
         'Devam Ediyor': tasks.filter(task => task.status === 'in_progress'),
         'Tamamlandı': tasks.filter(task => task.status === 'completed'),
     };
 
-    const onDragEnd = (result) => {
-        // Burada görevin durumunu güncelleyin
+    const onDragEnd = async (result) => {
+        if (!result.destination) return;
+
+        const { draggableId, destination } = result;
+        const updatedTask = tasks.find(task => task.id.toString() === draggableId);
+        if (updatedTask) {
+            const statusMap = {
+                'Yapılacak': 'pending',
+                'Devam Ediyor': 'in_progress',
+                'Tamamlandı': 'completed',
+            };
+            const newStatus = statusMap[destination.droppableId];
+
+            await axios.put(`/api/tasks/${updatedTask.id}`, { ...updatedTask, status: newStatus });
+            refreshTasks();
+        }
     };
 
     return (
