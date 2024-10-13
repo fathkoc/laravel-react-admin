@@ -14,12 +14,16 @@ class CreateNotificationsTable extends Migration
     public function up()
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('type');
-            $table->morphs('notifiable');
-            $table->text('data');
-            $table->timestamp('read_at')->nullable();
-            $table->timestamps();
+            $table->uuid('id')->primary();  // Her bildirim için UUID benzersiz kimlik
+            $table->string('type');  // Bildirimin tipi (örneğin, "TaskStatusChanged")
+            
+            // 'morphs' ile notifiable (bildirim alacak model) ilişkisini kuruyoruz
+            $table->morphs('notifiable');  // Kullanıcı, admin, vs. kim bildirim alacak
+            
+            $table->text('data');  // Bildirimle ilgili veri JSON formatında saklanacak
+            
+            $table->timestamp('read_at')->nullable();  // Bildirim okunduğu zaman
+            $table->timestamps();  // created_at ve updated_at
         });
     }
 
